@@ -128,6 +128,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CatalogsController.cs" />
     <Compile Include="Controllers\ProductCatalogController.cs" />
+    <Compile Include="Controllers\ProductCatalogs2Controller.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -148,6 +149,9 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\site.css" />
+    <Content Include="Images\Catalogs\LAP01.png" />
+    <Content Include="Images\Catalogs\MEN01.png" />
+    <Content Include="Images\Catalogs\WAT01.png" />
     <Content Include="Images\logo_euris.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -302,6 +306,11 @@
     <Content Include="Views\ProductCatalog\Details.cshtml" />
     <Content Include="Views\ProductCatalog\Edit.cshtml" />
     <Content Include="Views\ProductCatalog\Index.cshtml" />
+    <Content Include="Views\ProductCatalogs2\Create.cshtml" />
+    <Content Include="Views\ProductCatalogs2\Delete.cshtml" />
+    <Content Include="Views\ProductCatalogs2\Details.cshtml" />
+    <Content Include="Views\ProductCatalogs2\Edit.cshtml" />
+    <Content Include="Views\ProductCatalogs2\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

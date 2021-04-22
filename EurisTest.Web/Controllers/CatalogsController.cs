@@ -11,7 +11,7 @@ namespace EurisTest.Web.Controllers
         // GET: Catalogs
         public ActionResult Index()
         {
-            var Catalogs = _CatalogManager.GetCatalogsl();
+            var Catalogs = _CatalogManager.GetCatalogs();
 
             return View(Catalogs);
         }

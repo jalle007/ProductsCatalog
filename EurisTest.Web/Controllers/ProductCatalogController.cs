@@ -13,12 +13,15 @@ namespace EurisTest.Web.Controllers
 {
     public class ProductCatalogController : Controller
     {
-        private LocalDbEntities db = new LocalDbEntities();
         private ProductCatalogManager _ProductCatalogManager = new ProductCatalogManager();
+        private ProductManager _productManager = new ProductManager();
+
 
         // GET: ProductCatalogs
         public ActionResult Index()
         {
+            //var products = _productManager.GetProductsl();
+
             var ProductCatalogs = _ProductCatalogManager.GetProductCatalogsl();
 
             return View(ProductCatalogs);
@@ -99,13 +102,7 @@ namespace EurisTest.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-                db.Dispose();
-            
-            base.Dispose(disposing);
-        }
+     
     
     }
 }

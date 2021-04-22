@@ -9,7 +9,7 @@ namespace EURIS.Service
     {
         readonly LocalDbEntities _context = new LocalDbEntities();
 
-        public List<Catalog> GetCatalogsl()
+        public List<Catalog> GetCatalogs()
         {
             var Catalogs = (from item in _context.Catalogs select item).ToList();
             return Catalogs;

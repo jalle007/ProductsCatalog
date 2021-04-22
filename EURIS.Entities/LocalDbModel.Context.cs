@@ -26,7 +26,7 @@ namespace EURIS.Entities
         }
     
         public DbSet<Catalog> Catalogs { get; set; }
-        public DbSet<ProductCatalog> ProductCatalogs { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductCatalog> ProductCatalogs { get; set; }
     }
 }

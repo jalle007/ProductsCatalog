@@ -6,40 +6,47 @@
 
 <h2>Catalogs</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
+<p style="text-align:right">
+  @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Product)
-        </th>
-        <th></th>
-    </tr>
+  <tr>
+    <th>
+      @Html.DisplayNameFor(model => model.Code)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.Description)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.Product)
+    </th>
+    <td>
+      @Html.DisplayNameFor(model => model.Picture)
+
+    </td>
+    <th></th>
+  </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Product)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+<tr>
+  <td>
+    @Html.DisplayFor(modelItem => item.Code)
+  </td>
+  <td>
+    @Html.DisplayFor(modelItem => item.Description)
+  </td>
+  <td>
+    @Html.DisplayFor(modelItem => item.Product)
+  </td>
+  <td>
+    <img src="images/catalogs/@item.Picture"   height="60"/>
+  </td>
+  <td>
+    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+  </td>
+</tr>
 }
 
 </table>

@@ -23,6 +23,7 @@ namespace EURIS.Entities
         public string Code { get; set; }
         public string Description { get; set; }
         public string Product { get; set; }
+        public string Picture { get; set; }
     
         public virtual ICollection<ProductCatalog> ProductCatalogs { get; set; }
     }

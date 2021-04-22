@@ -6,7 +6,8 @@
 
 <h2>Products</h2>
 
-<p>
+<p style="text-align:right">
+
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
@@ -38,7 +39,7 @@
     @Html.DisplayFor(modelItem => item.Price)
   </td>
   <td>
-    <img src="images/products/@item.Picture"   alt="" height="60"/>
+    <img src="images/products/@item.Picture"   height="60"/>
 
   </td>
   <td>

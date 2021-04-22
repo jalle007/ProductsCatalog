@@ -13,6 +13,7 @@
           <Property Name="Code" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Product" Type="nvarchar" MaxLength="50" />
+          <Property Name="Picture" Type="nchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -75,12 +76,12 @@
       <Schema Namespace="LocalDbModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="LocalDbEntities" p1:LazyLoadingEnabled="true" >
           <EntitySet Name="Catalogs" EntityType="LocalDbModel.Catalog" />
+          <EntitySet Name="Products" EntityType="LocalDbModel.Product" />
           <EntitySet Name="ProductCatalogs" EntityType="LocalDbModel.ProductCatalog" />
           <AssociationSet Name="fk_Catalog_Id" Association="LocalDbModel.fk_Catalog_Id">
             <End Role="Catalog" EntitySet="Catalogs" />
             <End Role="ProductCatalog" EntitySet="ProductCatalogs" />
           </AssociationSet>
-          <EntitySet Name="Products" EntityType="LocalDbModel.Product" />
           <AssociationSet Name="fk_Product_Id" Association="LocalDbModel.fk_Product_Id">
             <End Role="Product" EntitySet="Products" />
             <End Role="ProductCatalog" EntitySet="ProductCatalogs" />
@@ -94,7 +95,19 @@
           <Property Name="Code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Product" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Picture" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="ProductCatalogs" Relationship="LocalDbModel.fk_Catalog_Id" FromRole="Catalog" ToRole="ProductCatalog" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Double" />
+          <Property Name="Picture" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ProductCatalogs" Relationship="LocalDbModel.fk_Product_Id" FromRole="Product" ToRole="ProductCatalog" />
         </EntityType>
         <EntityType Name="ProductCatalog">
           <Key>
@@ -118,17 +131,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Price" Type="Double" />
-          <Property Name="Picture" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="ProductCatalogs" Relationship="LocalDbModel.fk_Product_Id" FromRole="Product" ToRole="ProductCatalog" />
-        </EntityType>
         <Association Name="fk_Product_Id">
           <End Type="LocalDbModel.Product" Role="Product" Multiplicity="1" />
           <End Type="LocalDbModel.ProductCatalog" Role="ProductCatalog" Multiplicity="*" />
@@ -141,7 +143,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -150,18 +152,10 @@
           <EntitySetMapping Name="Catalogs">
             <EntityTypeMapping TypeName="LocalDbModel.Catalog">
               <MappingFragment StoreEntitySet="Catalog">
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
                 <ScalarProperty Name="Product" ColumnName="Product" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProductCatalogs">
-            <EntityTypeMapping TypeName="LocalDbModel.ProductCatalog">
-              <MappingFragment StoreEntitySet="ProductCatalog">
-                <ScalarProperty Name="CatalogId" ColumnName="CatalogId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -173,6 +167,15 @@
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductCatalogs">
+            <EntityTypeMapping TypeName="LocalDbModel.ProductCatalog">
+              <MappingFragment StoreEntitySet="ProductCatalog">
+                <ScalarProperty Name="CatalogId" ColumnName="CatalogId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
