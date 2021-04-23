@@ -107,15 +107,7 @@
 
 <script type="text/javascript">
   $(document).ready(function () {
-    //alert(1);
-    var Catalogs2 = '@(ViewBag.Catalogs2)';
-    //var res = JSON.parse(Catalogs2);
-    //console.log(Catalogs2);
-    //console.log(Catalogs2);
-    //for (const cat of Catalogs2) {
-    //  console.log(cat);
-    //}
-
+    
     // Redirect to catalog
     $("#catalogId").change(function () {
       var selected = $('#catalogId').find(":selected");
@@ -123,6 +115,7 @@
       var catalogId =selected.val();
       var code = selected.text().split(" | ")[0];
 
+      // Alert code
       alert(code);
       
       location.href = "/ProductCatalogs2/Index/" + catalogId;
@@ -185,17 +178,4 @@
 
   })
 </script>
-
-@*@section JavaScript{
-  <script type="text/javascript">
-    $(document).ready(function () {
-
-      var Catalogs2 = '@(ViewBag.Catalogs2)';
-      console.log(Catalogs2);
-
-      $("#catalogId").change(function () {
-
-      });
-    });
-  </script>
-}*@
+ 

@@ -41,16 +41,6 @@ namespace EurisTest.Web.Controllers
             var temp = allCatalogs.Select(c => new {Id=c.Id, Text = c.Code + " | " + c.Description }).ToList();
             ViewBag.Catalogs = new SelectList(temp, "Id", "Text", id);
 
-
-            var cat = JsonConvert.SerializeObject(temp); 
-
-            //string jsArray = "{";
-            //foreach (var cat in allCatalogs)
-            //{
-
-            //}
-            ViewBag.Catalogs2 = cat;
-
             var productsInCatalog = productCatalog.Select(p => p.Product).ToList();
             ViewBag.productsInCatalog = productsInCatalog;
 
