@@ -5,19 +5,24 @@
 }
 
 <h2>Catalog Products</h2>
- <hr />
+<hr />
 
 @{
   var productCatalogs = (List<EURIS.Entities.ProductCatalog>)ViewBag.productCatalogs;
 }
- 
+
 <div class="form-horizontal">
   @*@Html.HiddenFor(model => model.Id)*@
 
   <div class="form-group">
     @*@Html.LabelFor(model => model.CatalogId, "CatalogId", htmlAttributes: new { @class = "control-label col-md-2" })*@
-    <div class="col-md-10">
+    <div class="col-md-6">
       @Html.DropDownList("catalogId", (SelectList)ViewBag.Catalogs, htmlAttributes: new { @class = "form-control" })
+    </div>
+    <div class="col-md-6" style="float:right; text-align:right;">
+      <button id="btnAddCatalog">New Catalog</button>
+      <button id="btnEditCatalog">Edit Catalog</button>
+      <button id="btnDeleteCatalog">Delete Catalog</button>
     </div>
   </div>
 
@@ -27,7 +32,7 @@
     </div>
   </div>
 </div>
- 
+
 
 <div class="products-header">
   <div class="products-title">
@@ -54,7 +59,7 @@
   @foreach (var product in productsInCatalog)
   {
     <tr>
-      <td><input type="checkbox" /></td>
+      <td><input type="checkbox" class="form-check-input" /></td>
       <td>@Html.DisplayFor(item => product.Code)</td>
       <td>@Html.DisplayFor(item => product.Description)</td>
       <td>@Html.DisplayFor(item => product.Price)</td>
@@ -90,7 +95,7 @@
   @foreach (var product in products)
   {
     <tr>
-      <td><input type="checkbox"  /></td>
+      <td><input type="checkbox" class="form-check-input" /></td>
       <td>@Html.DisplayFor(item => product.Code)</td>
       <td>@Html.DisplayFor(item => product.Description)</td>
       <td>@Html.DisplayFor(item => product.Price)</td>
@@ -101,55 +106,96 @@
 </table>
 
 <script type="text/javascript">
-          $(document).ready(function(){
-            //alert(1);
+  $(document).ready(function () {
+    //alert(1);
+    var Catalogs2 = '@(ViewBag.Catalogs2)';
+    //var res = JSON.parse(Catalogs2);
+    //console.log(Catalogs2);
+    //console.log(Catalogs2);
+    //for (const cat of Catalogs2) {
+    //  console.log(cat);
+    //}
 
-            // Redirect to catalog
-            $("#catalogId").change(function () {
-              var val = $("#catalogId").val();
-              console.log("selected : " + val);
-              location.href = "/ProductCatalogs2/Index/" + val;
-            });
+    // Redirect to catalog
+    $("#catalogId").change(function () {
+      var selected = $('#catalogId').find(":selected");
 
+      var catalogId =selected.val();
+      var code = selected.text().split(" | ")[0];
 
-
-            // Loop through each row
-            function getSelected(table) {
-              var selected = [];
-
-              table.each(function (i, row) {
-                var $row = $(row);
-
-                $row.find('input[type="checkbox"]:checked').each(function () {
-                  var product_Id = $row.find("#product_Id").attr('value');  
-                  selected.push(product_Id);
-                });
-              });
-
-              return selected;
-            }
+      alert(code);
+      
+      location.href = "/ProductCatalogs2/Index/" + catalogId;
+    });
 
 
-            $("#btnAdd").click(function () {
-              var products = getSelected($('#tblAllProducts tr'));
-              var catalogId = $("#catalogId").val();
 
-              // Post Add
-              $.post("/ProductCatalogs2/Add", { catalogId: catalogId, selected: products }, function (data) {
-                location.href = "/ProductCatalogs2/Index/" + catalogId;
-              });
+    // Loop through each row
+    function getSelected(table) {
+      var selected = [];
 
-            });
+      table.each(function (i, row) {
+        var $row = $(row);
 
-            $("#btnRemove").click(function () {
-              var products = getSelected($('#tblCatalogProducts tr'));
-              var catalogId = $("#catalogId").val();
-              // Post Remove
-              $.post("/ProductCatalogs2/Remove", { catalogId: catalogId, selected: products }, function (data) {
-                location.href = "/ProductCatalogs2/Index/" + catalogId;
-              });
+        $row.find('input[type="checkbox"]:checked').each(function () {
+          var product_Id = $row.find("#product_Id").attr('value');
+          selected.push(product_Id);
+        });
+      });
 
-            });
+      return selected;
+    }
 
-        })
+
+    $("#btnAdd").click(function () {
+      var products = getSelected($('#tblAllProducts tr'));
+      var catalogId = $("#catalogId").val();
+
+      // Post Add
+      $.post("/ProductCatalogs2/Add", { catalogId: catalogId, selected: products }, function (data) {
+        location.href = "/ProductCatalogs2/Index/" + catalogId;
+      });
+
+    });
+
+    $("#btnRemove").click(function () {
+      var products = getSelected($('#tblCatalogProducts tr'));
+      var catalogId = $("#catalogId").val();
+      // Post Remove
+      $.post("/ProductCatalogs2/Remove", { catalogId: catalogId, selected: products }, function (data) {
+        location.href = "/ProductCatalogs2/Index/" + catalogId;
+      });
+
+    });
+
+    $("#btnAddCatalog").click(function () {
+      var catalogId = $("#catalogId").val();
+      location.href = "/Catalogs/Create";
+    });
+
+    $("#btnEditCatalog").click(function () {
+      var catalogId = $("#catalogId").val();
+      location.href = "/Catalogs/Edit/" + catalogId;
+    });
+
+    $("#btnDeleteCatalog").click(function () {
+      var catalogId = $("#catalogId").val();
+      location.href = "/Catalogs/Delete/" + catalogId;
+    });
+
+  })
 </script>
+
+@*@section JavaScript{
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+      var Catalogs2 = '@(ViewBag.Catalogs2)';
+      console.log(Catalogs2);
+
+      $("#catalogId").change(function () {
+
+      });
+    });
+  </script>
+}*@

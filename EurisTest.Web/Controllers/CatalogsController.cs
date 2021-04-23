@@ -7,6 +7,7 @@ namespace EurisTest.Web.Controllers
     public class CatalogsController : Controller
     {
         private CatalogManager _CatalogManager = new CatalogManager();
+        private ProductCatalogManager _productCatalogManager = new ProductCatalogManager();
 
         // GET: Catalogs
         public ActionResult Index()
@@ -88,6 +89,7 @@ namespace EurisTest.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             _CatalogManager.Delete(id);
+            _productCatalogManager.DeleteCatalog(id);
             return RedirectToAction("Index");
         }
 

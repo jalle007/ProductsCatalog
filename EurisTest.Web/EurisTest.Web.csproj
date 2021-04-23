@@ -127,7 +127,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CatalogsController.cs" />
-    <Compile Include="Controllers\ProductCatalogController.cs" />
     <Compile Include="Controllers\ProductCatalogs2Controller.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -302,11 +301,6 @@
     <Content Include="Views\Products\Details.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
-    <Content Include="Views\ProductCatalog\Create.cshtml" />
-    <Content Include="Views\ProductCatalog\Delete.cshtml" />
-    <Content Include="Views\ProductCatalog\Details.cshtml" />
-    <Content Include="Views\ProductCatalog\Edit.cshtml" />
-    <Content Include="Views\ProductCatalog\Index.cshtml" />
     <Content Include="Views\ProductCatalogs2\Create.cshtml" />
     <Content Include="Views\ProductCatalogs2\Delete.cshtml" />
     <Content Include="Views\ProductCatalogs2\Details.cshtml" />

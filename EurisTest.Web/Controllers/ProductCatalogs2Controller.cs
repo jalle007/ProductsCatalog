@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace EurisTest.Web.Controllers
 {
@@ -19,7 +20,7 @@ namespace EurisTest.Web.Controllers
         // 1. Delete product from catalog here
         // 2. after delete product clean join table
         // 3. add buttons 
-        // 4. Filter products in catalog
+        // 4. Filter products in catalog - done
 
         // GET: ProductCatalogs2
         public ActionResult Index(int? id)
@@ -36,8 +37,19 @@ namespace EurisTest.Web.Controllers
 
 
             var allCatalogs = db.Catalogs.ToList();
-            // Show Catalogs in Combobox
-            ViewBag.Catalogs = new SelectList(allCatalogs, "Id", "Description", id);
+            // Combobox data
+            var temp = allCatalogs.Select(c => new {Id=c.Id, Text = c.Code + " | " + c.Description }).ToList();
+            ViewBag.Catalogs = new SelectList(temp, "Id", "Text", id);
+
+
+            var cat = JsonConvert.SerializeObject(temp); 
+
+            //string jsArray = "{";
+            //foreach (var cat in allCatalogs)
+            //{
+
+            //}
+            ViewBag.Catalogs2 = cat;
 
             var productsInCatalog = productCatalog.Select(p => p.Product).ToList();
             ViewBag.productsInCatalog = productsInCatalog;

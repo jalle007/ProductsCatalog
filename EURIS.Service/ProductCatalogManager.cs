@@ -48,6 +48,21 @@ namespace EURIS.Service
             return result;
         }
 
+        public int DeleteCatalog(int catalogId)
+        {
+            var ProductCatalog = db.ProductCatalogs.Where(p => p.CatalogId == catalogId );
+            int result = 0;
+
+            foreach (var item in ProductCatalog)
+            {
+                db.ProductCatalogs.Remove(item);
+                result = db.SaveChanges();
+
+            }
+
+            return result;
+        }
+
 
     }
 }
