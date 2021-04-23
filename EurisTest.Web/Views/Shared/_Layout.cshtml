@@ -1,30 +1,16 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@ViewBag.Title - My ASP.NET Application</title>
+  @Styles.Render("~/Content/css")
+  @Scripts.Render("~/bundles/modernizr")
+  @Scripts.Render("~/bundles/jquery")
+
 </head>
 <body>
-  <!--<nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-dark">
-    <div class="container">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      </button>
-      <a class="navbar-brand" href="/">Euris Test</a>
-      <div class="navbar-collapse collapse" id="navbarSupportedContent">
-        <ul class="nav navbar-nav mr-auto">-->
-          @*<li class="nav-item"><a href="/" class="nav-link">Home</a></li>*@
-          <!--<li class="nav-item"><a href="/Products" class="nav-link">Products</a></li>
-          <li class="nav-item"><a href="/Catalogs" class="nav-link">Catalogs</a></li>
-          <li class="nav-item"><a href="/ProductCatalog" class="nav-link">Products in Catalogs</a></li>
-        </ul>
-         
-
-      </div>
-    </div>
-  </nav>-->
+   
 
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
@@ -41,7 +27,7 @@
           @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
           <li>@Html.ActionLink("Products", "Index", "Products")</li>
           <li>@Html.ActionLink("Catalogs", "Index", "Catalogs")</li>
-          <li>@Html.ActionLink("Products in Catalog", "Index", "ProductCatalog")</li>
+          <li>@Html.ActionLink("Catalog Products", "Index", "ProductCatalogs2")</li>
         </ul>
       </div>
     </div>
@@ -56,7 +42,6 @@
     </footer>
   </div>
 
-  @Scripts.Render("~/bundles/jquery")
   @Scripts.Render("~/bundles/bootstrap")
   @RenderSection("scripts", required: false)
 </body>

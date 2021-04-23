@@ -1,39 +1,155 @@
-﻿@model IEnumerable<EURIS.Entities.ProductCatalog>
+﻿@model EURIS.Entities.ProductCatalog
 
 @{
-    ViewBag.Title = "Index";
+  ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Catalog Products</h2>
+ <hr />
 
-<p style="text-align:right">
-  @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Catalog.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Product.Code)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Catalog.Code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Product.Code)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+@{
+  var productCatalogs = (List<EURIS.Entities.ProductCatalog>)ViewBag.productCatalogs;
 }
+ 
+<div class="form-horizontal">
+  @*@Html.HiddenFor(model => model.Id)*@
 
+  <div class="form-group">
+    @*@Html.LabelFor(model => model.CatalogId, "CatalogId", htmlAttributes: new { @class = "control-label col-md-2" })*@
+    <div class="col-md-10">
+      @Html.DropDownList("catalogId", (SelectList)ViewBag.Catalogs, htmlAttributes: new { @class = "form-control" })
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md col-md-10">
+      @*<input type="submit" value="Save" class="btn btn-default" />*@
+    </div>
+  </div>
+</div>
+ 
+
+<div class="products-header">
+  <div class="products-title">
+    <h4>Catalog products</h4>
+  </div>
+  <div class="products-button">
+    <button id="btnRemove">Remove selected</button>
+  </div>
+</div>
+
+<table class="table" id="tblCatalogProducts">
+  <tr>
+    <th>Select</th>
+    <th>Code</th>
+    <th>Description</th>
+    <th>Price</th>
+    <th>Picture</th>
+    <th></th>
+  </tr>
+  @{
+    var productsInCatalog = (List<EURIS.Entities.Product>)ViewBag.productsInCatalog;
+  }
+
+  @foreach (var product in productsInCatalog)
+  {
+    <tr>
+      <td><input type="checkbox" /></td>
+      <td>@Html.DisplayFor(item => product.Code)</td>
+      <td>@Html.DisplayFor(item => product.Description)</td>
+      <td>@Html.DisplayFor(item => product.Price)</td>
+      <td><img src="~/images/products/@product.Picture" height="30" /></td>
+      <td>@Html.HiddenFor(item => product.Id)</td>
+    </tr>
+  }
 </table>
+
+
+<div class="products-header">
+  <div class="products-title">
+    <h4>All products</h4>
+  </div>
+  <div class="products-button">
+    <button id="btnAdd">Add selected</button>
+  </div>
+</div>
+
+<table class="table" id="tblAllProducts">
+  <tr>
+    <th>Select</th>
+    <th>Code</th>
+    <th>Description</th>
+    <th>Price</th>
+    <th>Picture</th>
+    <th></th>
+  </tr>
+  @{
+    var products = (List<EURIS.Entities.Product>)ViewBag.Products;
+  }
+
+  @foreach (var product in products)
+  {
+    <tr>
+      <td><input type="checkbox"  /></td>
+      <td>@Html.DisplayFor(item => product.Code)</td>
+      <td>@Html.DisplayFor(item => product.Description)</td>
+      <td>@Html.DisplayFor(item => product.Price)</td>
+      <td><img src="~/images/products/@product.Picture" height="30" /></td>
+      <td>@Html.HiddenFor(item => product.Id)</td>
+    </tr>
+  }
+</table>
+
+<script type="text/javascript">
+          $(document).ready(function(){
+            //alert(1);
+
+            // Redirect to catalog
+            $("#catalogId").change(function () {
+              var val = $("#catalogId").val();
+              console.log("selected : " + val);
+              location.href = "/ProductCatalogs2/Index/" + val;
+            });
+
+
+
+            // Loop through each row
+            function getSelected(table) {
+              var selected = [];
+
+              table.each(function (i, row) {
+                var $row = $(row);
+
+                $row.find('input[type="checkbox"]:checked').each(function () {
+                  var product_Id = $row.find("#product_Id").attr('value');  
+                  selected.push(product_Id);
+                });
+              });
+
+              return selected;
+            }
+
+
+            $("#btnAdd").click(function () {
+              var products = getSelected($('#tblAllProducts tr'));
+              var catalogId = $("#catalogId").val();
+
+              // Post Add
+              $.post("/ProductCatalogs2/Add", { catalogId: catalogId, selected: products }, function (data) {
+                location.href = "/ProductCatalogs2/Index/" + catalogId;
+              });
+
+            });
+
+            $("#btnRemove").click(function () {
+              var products = getSelected($('#tblCatalogProducts tr'));
+              var catalogId = $("#catalogId").val();
+              // Post Remove
+              $.post("/ProductCatalogs2/Remove", { catalogId: catalogId, selected: products }, function (data) {
+                location.href = "/ProductCatalogs2/Index/" + catalogId;
+              });
+
+            });
+
+        })
+</script>

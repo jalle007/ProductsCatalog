@@ -7,34 +7,33 @@ namespace EURIS.Service
 {
     public class ProductManager
     {
-        readonly LocalDbEntities _context = new LocalDbEntities();
+        readonly LocalDbEntities db = new LocalDbEntities();
 
-        public List<Product> GetProductsl()
+        public List<Product> GetProducts()
         {
-            var products = (from item in _context.Products select item).ToList();
-            return products;
+           return db.Products.ToList();
         }
 
         public Product GetProduct(int id)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = db.Products.FirstOrDefault(p => p.Id == id);
             return product;
         }
 
         public Product AddOrUpdate(Product product)
         {
-            _context.Products.AddOrUpdate(product);
-            var result = _context.SaveChanges();
+            db.Products.AddOrUpdate(product);
+            var result = db.SaveChanges();
             
             return (result == 0 ? null : product);
         }
 
         public int Delete(int id)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = db.Products.FirstOrDefault(p => p.Id == id);
 
-            _context.Products.Remove(product);
-            int result = _context.SaveChanges();
+            db.Products.Remove(product);
+            int result = db.SaveChanges();
 
             return result ;
         }

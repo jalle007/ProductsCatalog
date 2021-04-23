@@ -18,7 +18,7 @@ namespace EurisTest.Web.Controllers
         // GET: Products
         public ActionResult Index()
         {
-            var products = _productManager.GetProductsl();
+            var products = _productManager.GetProducts();
 
             return View(products);
         }

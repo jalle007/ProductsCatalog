@@ -1,25 +1,90 @@
-﻿using System;
+﻿using EURIS.Entities;
+using EURIS.Service;
+using EurisTest.Web.Models;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using EURIS.Entities;
 
 namespace EurisTest.Web.Controllers
 {
     public class ProductCatalogs2Controller : Controller
     {
         private LocalDbEntities db = new LocalDbEntities();
+        private ProductManager _productManager = new ProductManager();
+        private CatalogManager _catalogManager = new CatalogManager();
+        private ProductCatalogManager _productCatalogManager = new ProductCatalogManager();
+
+        // 1. Delete product from catalog here
+        // 2. after delete product clean join table
+        // 3. add buttons 
+        // 4. Filter products in catalog
 
         // GET: ProductCatalogs2
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var productCatalogs = db.ProductCatalogs.Include(p => p.Catalog).Include(p => p.Product);
-            return View(productCatalogs.ToList());
+            // GEt products in Catalogs 
+            List<ProductCatalog> productCatalog;
+            if (id != null)
+                productCatalog = db.ProductCatalogs.Where(c => c.CatalogId == id).Include(p => p.Product).ToList();
+            else
+            {
+                var min = db.ProductCatalogs.Min(c => c.CatalogId);
+                productCatalog = db.ProductCatalogs.Where(c => c.CatalogId == min).Include(p => p.Product).ToList();
+            }
+
+
+            var allCatalogs = db.Catalogs.ToList();
+            // Show Catalogs in Combobox
+            ViewBag.Catalogs = new SelectList(allCatalogs, "Id", "Description", id);
+
+            var productsInCatalog = productCatalog.Select(p => p.Product).ToList();
+            ViewBag.productsInCatalog = productsInCatalog;
+
+            // All products MINUS  products already in catalog
+            var allProducts = _productManager.GetProducts();
+            allProducts = allProducts.Except(productsInCatalog, new EqualityComparer()).ToList();
+
+            ViewBag.Products = allProducts;
+
+
+            ViewBag.productCatalogs = productCatalog.ToList();
+
+            return View();
         }
+
+        // POST: ProductCatalogs2/Add
+        [HttpPost]
+        public ActionResult Add(int catalogId, int[] selected)
+        {
+            foreach (int product_id in selected)
+            {
+                _productCatalogManager.AddOrUpdate(new ProductCatalog() {
+                    CatalogId  = catalogId,
+                    ProductId = product_id
+                });
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+
+        // POST: ProductCatalogs2/Add
+        [HttpPost]
+        public ActionResult Remove(int catalogId, int[] selected)
+        {
+            foreach (int product_id in selected)
+            {
+                _productCatalogManager.DeleteProduct(catalogId, product_id);
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+
+
+
 
         // GET: ProductCatalogs2/Details/5
         public ActionResult Details(int? id)
@@ -45,8 +110,6 @@ namespace EurisTest.Web.Controllers
         }
 
         // POST: ProductCatalogs2/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,ProductId,CatalogId")] ProductCatalog productCatalog)
@@ -67,9 +130,8 @@ namespace EurisTest.Web.Controllers
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            
             ProductCatalog productCatalog = db.ProductCatalogs.Find(id);
             if (productCatalog == null)
             {
@@ -81,8 +143,6 @@ namespace EurisTest.Web.Controllers
         }
 
         // POST: ProductCatalogs2/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,ProductId,CatalogId")] ProductCatalog productCatalog)
@@ -124,13 +184,5 @@ namespace EurisTest.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

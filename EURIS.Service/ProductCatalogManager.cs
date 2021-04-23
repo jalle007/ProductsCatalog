@@ -7,36 +7,45 @@ namespace EURIS.Service
 {
     public class ProductCatalogManager
     {
-        readonly LocalDbEntities _context = new LocalDbEntities();
+        readonly LocalDbEntities db = new LocalDbEntities();
 
         public List<ProductCatalog> GetProductCatalogsl()
         {
-            var ProductCatalogs = (from item in _context.ProductCatalogs select item).ToList();
-            return ProductCatalogs;
+            return db.ProductCatalogs.ToList();
         }
 
         public ProductCatalog GetProductCatalog(int id)
         {
-            var ProductCatalog = _context.ProductCatalogs.FirstOrDefault(p => p.Id == id);
+            var ProductCatalog = db.ProductCatalogs.FirstOrDefault(p => p.Id == id);
             return ProductCatalog;
         }
 
         public ProductCatalog AddOrUpdate(ProductCatalog ProductCatalog)
         {
-            _context.ProductCatalogs.AddOrUpdate(ProductCatalog);
-            var result = _context.SaveChanges();
+            db.ProductCatalogs.AddOrUpdate(ProductCatalog);
+            var result = db.SaveChanges();
             
             return (result == 0 ? null : ProductCatalog);
         }
 
         public int Delete(int id)
         {
-            var ProductCatalog = _context.ProductCatalogs.FirstOrDefault(p => p.Id == id);
+            var ProductCatalog = db.ProductCatalogs.FirstOrDefault(p => p.Id == id);
 
-            _context.ProductCatalogs.Remove(ProductCatalog);
-            int result = _context.SaveChanges();
+            db.ProductCatalogs.Remove(ProductCatalog);
+            int result = db.SaveChanges();
 
             return result ;
+        }
+
+        public int DeleteProduct(int catalogId, int productId)
+        {
+            var ProductCatalog = db.ProductCatalogs.FirstOrDefault(p => p.CatalogId == catalogId && p.ProductId == productId);
+
+            db.ProductCatalogs.Remove(ProductCatalog);
+            int result = db.SaveChanges();
+
+            return result;
         }
 
 
