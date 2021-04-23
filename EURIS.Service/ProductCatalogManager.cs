@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using EURIS.Entities;
+﻿using EURIS.Entities;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Linq;
 
 namespace EURIS.Service
 {
@@ -9,7 +10,7 @@ namespace EURIS.Service
     {
         readonly LocalDbEntities db = new LocalDbEntities();
 
-        public List<ProductCatalog> GetProductCatalogsl()
+        public List<ProductCatalog> GetProductCatalogs()
         {
             return db.ProductCatalogs.ToList();
         }
@@ -19,6 +20,21 @@ namespace EURIS.Service
             var ProductCatalog = db.ProductCatalogs.FirstOrDefault(p => p.Id == id);
             return ProductCatalog;
         }
+
+        public List<ProductCatalog> GetByCatalogId(int? id)
+        {
+            List<ProductCatalog> productCatalog;
+            if (id != null)
+                productCatalog = db.ProductCatalogs.Where(c => c.CatalogId == id).Include(p => p.Product).ToList();
+            else
+            {
+                var min = db.ProductCatalogs.Min(c => c.CatalogId);
+                productCatalog = db.ProductCatalogs.Where(c => c.CatalogId == min).Include(p => p.Product).ToList();
+            }
+
+            return productCatalog;
+        }
+
 
         public ProductCatalog AddOrUpdate(ProductCatalog ProductCatalog)
         {

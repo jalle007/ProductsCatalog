@@ -12,31 +12,18 @@ namespace EurisTest.Web.Controllers
 {
     public class ProductCatalogs2Controller : Controller
     {
-        private LocalDbEntities db = new LocalDbEntities();
         private ProductManager _productManager = new ProductManager();
         private CatalogManager _catalogManager = new CatalogManager();
         private ProductCatalogManager _productCatalogManager = new ProductCatalogManager();
-
-        // 1. Delete product from catalog here
-        // 2. after delete product clean join table
-        // 3. add buttons 
-        // 4. Filter products in catalog - done
 
         // GET: ProductCatalogs2
         public ActionResult Index(int? id)
         {
             // GEt products in Catalogs 
-            List<ProductCatalog> productCatalog;
-            if (id != null)
-                productCatalog = db.ProductCatalogs.Where(c => c.CatalogId == id).Include(p => p.Product).ToList();
-            else
-            {
-                var min = db.ProductCatalogs.Min(c => c.CatalogId);
-                productCatalog = db.ProductCatalogs.Where(c => c.CatalogId == min).Include(p => p.Product).ToList();
-            }
+            List<ProductCatalog> productCatalog = _productCatalogManager.GetByCatalogId(id); 
 
 
-            var allCatalogs = db.Catalogs.ToList();
+            var allCatalogs = _catalogManager.GetCatalogs();
             // Combobox data
             var temp = allCatalogs.Select(c => new {Id=c.Id, Text = c.Code + " | " + c.Description }).ToList();
             ViewBag.Catalogs = new SelectList(temp, "Id", "Text", id);
@@ -84,107 +71,6 @@ namespace EurisTest.Web.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-
-
-
-
-        // GET: ProductCatalogs2/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ProductCatalog productCatalog = db.ProductCatalogs.Find(id);
-            if (productCatalog == null)
-            {
-                return HttpNotFound();
-            }
-            return View(productCatalog);
-        }
-
-        // GET: ProductCatalogs2/Create
-        public ActionResult Create()
-        {
-            ViewBag.CatalogId = new SelectList(db.Catalogs, "Id", "Code");
-            ViewBag.ProductId = new SelectList(db.Products, "Id", "Code");
-            return View();
-        }
-
-        // POST: ProductCatalogs2/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProductId,CatalogId")] ProductCatalog productCatalog)
-        {
-            if (ModelState.IsValid)
-            {
-                db.ProductCatalogs.Add(productCatalog);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.CatalogId = new SelectList(db.Catalogs, "Id", "Code", productCatalog.CatalogId);
-            ViewBag.ProductId = new SelectList(db.Products, "Id", "Code", productCatalog.ProductId);
-            return View(productCatalog);
-        }
-
-        // GET: ProductCatalogs2/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
-            ProductCatalog productCatalog = db.ProductCatalogs.Find(id);
-            if (productCatalog == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CatalogId = new SelectList(db.Catalogs, "Id", "Code", productCatalog.CatalogId);
-            ViewBag.ProductId = new SelectList(db.Products, "Id", "Code", productCatalog.ProductId);
-            return View(productCatalog);
-        }
-
-        // POST: ProductCatalogs2/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProductId,CatalogId")] ProductCatalog productCatalog)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(productCatalog).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.CatalogId = new SelectList(db.Catalogs, "Id", "Code", productCatalog.CatalogId);
-            ViewBag.ProductId = new SelectList(db.Products, "Id", "Code", productCatalog.ProductId);
-            return View(productCatalog);
-        }
-
-        // GET: ProductCatalogs2/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ProductCatalog productCatalog = db.ProductCatalogs.Find(id);
-            if (productCatalog == null)
-            {
-                return HttpNotFound();
-            }
-            return View(productCatalog);
-        }
-
-        // POST: ProductCatalogs2/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            ProductCatalog productCatalog = db.ProductCatalogs.Find(id);
-            db.ProductCatalogs.Remove(productCatalog);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
+         
     }
 }
